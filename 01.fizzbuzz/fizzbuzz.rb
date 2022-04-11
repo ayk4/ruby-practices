@@ -4,7 +4,7 @@ def fizzbuzz
     when n % 3 == 0 && n % 5 == 0 then
       puts 'Fizzbuzz'
     when n % 3 == 0 then
-      puts 'Buzz'
+      puts 'Fizz'
     when n % 5 == 0 then
       puts 'Buzz'
     else
