@@ -1,3 +1,4 @@
+#if 文に訂正しました
 def fizzbuzz
   (1..20).each do|num|
     if num % 3 == 0 && num % 5 == 0
