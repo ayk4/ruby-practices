@@ -17,7 +17,7 @@ def calender_month(year: Date.today.year, month: Date.today.month)
   print " " * wday
 
   days = (1..lastday_date).map{ |n| n.to_s.rjust(2)}
-  days = Array.new(first_wday, ' ').push(days).flatten.each_slice(7).to_a
+  days = (Array.new(first_wday, ' ') + days).each_slice(7).to_a
 
   days.each do |week|
     puts week.join(' ')
