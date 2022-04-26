@@ -28,7 +28,6 @@ shots.each_slice(2) do |shot|
   end
   frames.slice!(10, 11)
 end
-p frames
 
 point = 0
 frames.each_with_index do |frame, i|
@@ -46,8 +45,6 @@ frames.each_with_index do |frame, i|
   when 8
     if frame[0]==10 #ストライク
       point += 10 + frames[i+1][0] + frames[i+1][1]
-      p frames[i+1][0]
-      p frames[i+1][1]
     elsif  frame.sum == 10 #スペア
       point += 10 + frames[i+1][0]
     else
