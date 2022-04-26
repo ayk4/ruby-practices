@@ -1,6 +1,7 @@
 require 'debug'
 
 score = ARGV[0]
+
 scores = score.split(',')
 shots = []
 
