@@ -9,14 +9,13 @@ end
 
 #受け取ったデータを配列に収める
 def make_array(scores)
-  shots = scores.map.each do |score|
+  shots = scores.flat_map do |score|
     if score == 'X'
       [10,0]
     else
       score.to_i
     end
   end
-  shots.flatten!
   arrange_array(shots)
 end
 
@@ -52,7 +51,7 @@ def add_point(frames)
     case i
     when 0..7 #8ラウンド目まで
       if frame[0]==10 && frames[i+1][0]==10 #ストライクが２回連続
-        point += 10 + 10 + frames[i+2][0] 
+        point += 10 + 10 + frames[i+2][0]
       elsif frame[0]==10 #ストライクが１回のみ
         point += 10 + frames[i+1][0] + frames[i+1][1]
       elsif  frame.sum == 10 && frame[0]!=10 #スペア
@@ -76,4 +75,3 @@ def add_point(frames)
 end
 
 main
-
