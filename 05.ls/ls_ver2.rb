@@ -2,13 +2,27 @@ require 'optparse'
 require 'debug'
 
 def main
+  judge_option
   get_deta
   make_array
   show_files
 end
 
+def judge_option
+  @options = {}
+  OptionParser.new do |opt|
+    opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| @options[:a] = v }
+    #オプションをここに追加していく予定です
+    opt.parse!(ARGV)
+  end
+end
+
 def get_deta
-  Dir.glob("*").sort
+  if @options.has_key?(:a)
+    Dir.glob("*", File::FNM_DOTMATCH)
+  else
+    Dir.glob("*").sort
+  end
 end
 
 MAX_ROW = 3.0
