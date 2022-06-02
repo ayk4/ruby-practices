@@ -2,22 +2,19 @@ require 'optparse'
 require 'debug'
 
 def main
-  judge_option
-  get_deta
-  make_array
-  show_files
+  current_dir = get_deta
+  arrays = make_array(current_dir)
+  show_files(arrays)
 end
 
-def judge_option
+def get_deta
   @options = {}
   OptionParser.new do |opt|
     opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| @options[:a] = v }
     #オプションをここに追加していく予定です
     opt.parse!(ARGV)
   end
-end
 
-def get_deta
   if @options.has_key?(:a)
     Dir.glob("*", File::FNM_DOTMATCH)
   else
@@ -26,8 +23,7 @@ def get_deta
 end
 
 MAX_ROW = 3.0
-def make_array
-  current_dir = get_deta
+def make_array(current_dir)
   total_file_size = current_dir.size
   columns = (total_file_size / MAX_ROW).ceil
   arrays = []
@@ -42,8 +38,8 @@ def make_array
   end
 end
 
-def show_files
-  transposed_array = make_array.transpose
+def show_files(arrays)
+  transposed_array = arrays.transpose
   transposed_array.each do |two_dimensional_array|
     two_dimensional_array.each do |file|
       print "#{file}".ljust(25)
