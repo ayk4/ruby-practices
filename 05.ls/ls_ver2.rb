@@ -8,14 +8,14 @@ def main
 end
 
 def get_deta
-  @options = {}
+  options = {}
   OptionParser.new do |opt|
-    opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| @options[:a] = v }
+    opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| options[:a] = v }
     #オプションをここに追加していく予定です
     opt.parse!(ARGV)
   end
 
-  if @options.has_key?(:a)
+  if options.has_key?(:a)
     Dir.glob("*", File::FNM_DOTMATCH)
   else
     Dir.glob("*").sort
@@ -24,10 +24,9 @@ end
 
 MAX_ROW = 3.0
 def make_array(current_dir)
-  total_file_size = current_dir.size
-  columns = (total_file_size / MAX_ROW).ceil
+  columns = (current_dir.size / MAX_ROW).ceil
   arrays = []
-  if total_file_size.zero?
+  if current_dir.size.zero?
     arrays
   else
     current_dir.each_slice(columns) do |list_of_file|
@@ -39,8 +38,7 @@ def make_array(current_dir)
 end
 
 def show_files(arrays)
-  transposed_array = arrays.transpose
-  transposed_array.each do |two_dimensional_array|
+  arrays.transpose.each do |two_dimensional_array|
     two_dimensional_array.each do |file|
       print "#{file}".ljust(25)
     end
