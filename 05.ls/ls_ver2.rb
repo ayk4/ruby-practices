@@ -1,15 +1,13 @@
 require 'optparse'
 require 'debug'
-require 'nkf'
-
 
 def main
-  current_dir =  get_deta
-  arrays = make_array(current_dir)
-  show_files(arrays)
+  all_files = get_files_name
+  create_and_show_files_list(all_files)
 end
 
-def get_deta
+
+def get_files_name
   options = {}
   OptionParser.new do |opt|
     opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| options[:a] = v }
@@ -24,25 +22,19 @@ def get_deta
   end
 end
 
-MAX_ROW = 3.0
-def make_array(current_dir)
-  columns = (current_dir.size / MAX_ROW).ceil
-  arrays = []
-  if current_dir.size.zero?
-    arrays
-  else
-    current_dir.each_slice(columns) do |list_of_file|
-      arrays << list_of_file
-    end
-    max_size = arrays.map(&:size).max
-    arrays.map! { |element| element.values_at(0...max_size) }
-  end
-end
+MAX_COLUMN_NUMBER = 3
 
-def show_files(arrays)
-  arrays.transpose.each do |two_dimensional_array|
-    two_dimensional_array.each do |file|
-      print "#{file}".ljust(25,' ')
+def create_and_show_files_list(all_files)
+  columns_number = (all_files.size / MAX_COLUMN_NUMBER).ceil
+  all_files.push(nil) while all_files.size % MAX_COLUMN_NUMBER != 0
+  file_index = all_files.each_slice(MAX_COLUMN_NUMBER).to_a.transpose
+
+  space = 5
+  max_text_length = all_files.compact.max_by(&:size).size + space
+  
+  file_index.transpose.each do |index| 
+    index.each do |file|
+      print "#{file}".ljust(max_text_length)
     end
     print  "\n"
   end
