@@ -28,16 +28,13 @@ SPACE = 5
 def create_and_show_files_list(all_files)
   row = (all_files.size / COLUMN_NUMBER).ceil
   rest_of_row = all_files.size % COLUMN_NUMBER
-  (row - rest_of_row).times {all_files.push(nil)} if rest_of_row != 0
-  file_index = all_files.each_slice(row).to_a
   max_text_length = all_files.compact.max_by(&:size).size + SPACE
-  files = file_index.transpose
+  formd_file = all_files.map {|space| space.to_s.ljust(max_text_length)}
+  (row -  rest_of_row).times {formd_file.push(nil)} if rest_of_row != 0
+  file_index = formd_file.each_slice(row).to_a
   
-  files.each do |index| 
-    index.each do |file|
-      print "#{file}".ljust(max_text_length)
-    end
-    print  "\n"
+  file_index.transpose.each do |index| 
+    puts index.join
   end
 end
 
