@@ -22,17 +22,18 @@ def get_files_name
   end
 end
 
-MAX_COLUMN_NUMBER = 3
+COLUMN_NUMBER = 3
+SPACE = 5
 
 def create_and_show_files_list(all_files)
-  columns_number = (all_files.size / MAX_COLUMN_NUMBER).ceil
-  all_files.push(nil) while all_files.size % MAX_COLUMN_NUMBER != 0
-  file_index = all_files.each_slice(MAX_COLUMN_NUMBER).to_a.transpose
-
-  space = 5
-  max_text_length = all_files.compact.max_by(&:size).size + space
+  row = (all_files.size / COLUMN_NUMBER).ceil
+  rest_of_row = all_files.size % COLUMN_NUMBER
+  (row - rest_of_row).times {all_files.push(nil)} if rest_of_row != 0
+  file_index = all_files.each_slice(row).to_a
+  max_text_length = all_files.compact.max_by(&:size).size + SPACE
+  files = file_index.transpose
   
-  file_index.transpose.each do |index| 
+  files.each do |index| 
     index.each do |file|
       print "#{file}".ljust(max_text_length)
     end
