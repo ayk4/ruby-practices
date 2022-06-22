@@ -32,9 +32,9 @@ def create_and_show_files_list(all_files)
   max_column_width = all_files.compact.max_by(&:size).size + SPACE
   formd_file = all_files.map {|space| space.to_s.ljust(max_column_width)}
   (display_row_number * COLUMN_NUMBER - all_files.size).times {formd_file.push(nil)} if rest_of_row != 0
-  file_index = formd_file.each_slice(display_row_number).to_a
+   set_of_files_arrays = formd_file.each_slice(display_row_number).to_a
 
-  file_index.transpose.each do |index|
+   set_of_files_arrays.transpose.each do |index|
     puts index.join
   end
 end
