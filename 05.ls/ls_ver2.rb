@@ -29,8 +29,8 @@ def create_and_show_files_list(all_files)
 
   rest_of_row = all_files.size % COLUMN_NUMBER
 
-  max_text_length = all_files.compact.max_by(&:size).size + SPACE
-  formd_file = all_files.map {|space| space.to_s.ljust(max_text_length)}
+  max_column_width = all_files.compact.max_by(&:size).size + SPACE
+  formd_file = all_files.map {|space| space.to_s.ljust(max_column_width)}
   (row * COLUMN_NUMBER - all_files.size).times {formd_file.push(nil)} if rest_of_row != 0
   file_index = formd_file.each_slice(row).to_a
 
