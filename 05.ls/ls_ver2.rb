@@ -10,7 +10,7 @@ def get_files_name
   options = {}
   OptionParser.new do |opt|
     opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| options[:a] = v }
-    #オプションをここに追加していく予定です
+    # オプションをここに追加していく予定です
     opt.parse!(ARGV)
   end
 
@@ -30,11 +30,11 @@ def create_and_show_files_list(all_files)
   rest_of_row = all_files.size % COLUMN_NUMBER
 
   max_column_width = all_files.compact.max_by(&:size).size + SPACE
-  formd_file = all_files.map {|space| space.to_s.ljust(max_column_width)}
-  (display_row_number * COLUMN_NUMBER - all_files.size).times {formd_file.push(nil)} if rest_of_row != 0
-   set_of_files_arrays = formd_file.each_slice(display_row_number).to_a
+  file_and_space = all_files.map {|space| space.to_s.ljust(max_column_width)}
+  (display_row_number * COLUMN_NUMBER - all_files.size).times {file_and_space.push(nil)} if rest_of_row != 0
+  set_of_files_arrays = file_and_space.each_slice(display_row_number).to_a
 
-   set_of_files_arrays.transpose.each do |index|
+  set_of_files_arrays.transpose.each do |index|
     puts index.join
   end
 end
