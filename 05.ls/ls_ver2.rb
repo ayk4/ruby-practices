@@ -2,39 +2,40 @@ require 'optparse'
 require 'debug'
 
 def main
-  get_deta
-  make_array
-  show_files
+  all_files = get_files_name
+  create_and_show_files_list(all_files)
 end
 
-def get_deta
-  Dir.glob("*").sort
-end
+def get_files_name
+  options = {}
+  OptionParser.new do |opt|
+    opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| options[:a] = v }
+    # オプションをここに追加していく予定です
+    opt.parse!(ARGV)
+  end
 
-MAX_ROW = 3.0
-def make_array
-  current_dir = get_deta
-  total_file_size = current_dir.size
-  columns = (total_file_size / MAX_ROW).ceil
-  arrays = []
-  if total_file_size.zero?
-    arrays
+  if options.has_key?(:a)
+    Dir.glob("*", File::FNM_DOTMATCH)
   else
-    current_dir.each_slice(columns) do |list_of_file|
-      arrays << list_of_file
-    end
-    max_size = arrays.map(&:size).max
-    arrays.map! { |element| element.values_at(0...max_size) }
+    Dir.glob("*").sort
   end
 end
 
-def show_files
-  transposed_array = make_array.transpose
-  transposed_array.each do |two_dimensional_array|
-    two_dimensional_array.each do |file|
-      print "#{file}".ljust(25)
-    end
-    print  "\n"
+COLUMN_NUMBER = 3
+SPACE = 5
+
+def create_and_show_files_list(all_files)
+  display_row_number = (all_files.size.to_f / COLUMN_NUMBER).ceil
+
+  rest_of_row = all_files.size % COLUMN_NUMBER
+
+  max_column_width = all_files.compact.max_by(&:size).size + SPACE
+  file_and_space = all_files.map {|space| space.to_s.ljust(max_column_width)}
+  (display_row_number * COLUMN_NUMBER - all_files.size).times {file_and_space.push(nil)} if rest_of_row != 0
+  set_of_files_arrays = file_and_space.each_slice(display_row_number).to_a
+
+  set_of_files_arrays.transpose.each do |index|
+    puts index.join
   end
 end
 
