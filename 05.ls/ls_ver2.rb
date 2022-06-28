@@ -10,12 +10,14 @@ def get_files_name
   options = {}
   OptionParser.new do |opt|
     opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| options[:a] = v }
-    # オプションをここに追加していく予定です
+    opt.on('-r', 'reverse', 'reverse the sort order'){ |v| options[:r] = v }
     opt.parse!(ARGV)
   end
 
   if options.has_key?(:a)
     Dir.glob("*", File::FNM_DOTMATCH)
+  elsif options.has_key?(:r)
+    Dir.glob("*").reverse
   else
     Dir.glob("*").sort
   end
