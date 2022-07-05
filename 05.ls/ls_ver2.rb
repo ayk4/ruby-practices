@@ -10,12 +10,14 @@ def get_files_name
   options = {}
   OptionParser.new do |opt|
     opt.on('-a', '--all', 'do not ignore entries starting with .'){ |v| options[:a] = v }
-    # オプションをここに追加していく予定です
+    opt.on('-r', 'reverse', 'reverse the sort order'){ |v| options[:r] = v }
     opt.parse!(ARGV)
   end
 
   if options.has_key?(:a)
     Dir.glob("*", File::FNM_DOTMATCH)
+  elsif options.has_key?(:r)
+    Dir.glob("*").reverse
   else
     Dir.glob("*").sort
   end
@@ -30,9 +32,9 @@ def create_and_show_files_list(all_files)
   rest_of_row = all_files.size % COLUMN_NUMBER
 
   max_column_width = all_files.compact.max_by(&:size).size + SPACE
-  file_and_space = all_files.map {|space| space.to_s.ljust(max_column_width)}
-  (display_row_number * COLUMN_NUMBER - all_files.size).times {file_and_space.push(nil)} if rest_of_row != 0
-  set_of_files_arrays = file_and_space.each_slice(display_row_number).to_a
+  formatted_content_names = all_files.map {|space| space.to_s.ljust(max_column_width)}
+  (display_row_number * COLUMN_NUMBER - all_files.size).times {formatted_content_names.push(nil)} if rest_of_row != 0
+  set_of_files_arrays = formatted_content_names.each_slice(display_row_number).to_a
 
   set_of_files_arrays.transpose.each do |index|
     puts index.join
