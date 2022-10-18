@@ -10,16 +10,12 @@ def print_result(**options)
   file_name = ARGV[0]
   text = IO.read(file_name)
 
-  print_newline_counts = newline_counts(text) if options[:l]
-  print_word_count = word_counts(text) if options[:w]
-  print_byte_count = byte_count(text) if options[:c]
-  print_file_name = file_name if options[:l] || options[:w] || options[:c]
+  print_newline_counts = newline_counts(text) if options[:l] || options.empty?
+  print_word_count = word_counts(text) if options[:w] || options.empty?
+  print_byte_count = byte_count(text) if options[:c] || options.empty?
+  print_file_name = file_name unless options.empty?
 
-  if options.empty?
-    puts "#{newline_counts(text)} #{word_counts(text)} #{byte_count(text)} #{file_name} "
-  else
-    print "#{print_newline_counts} #{print_word_count} #{print_byte_count} #{print_file_name} \n"
-  end
+  print "#{print_newline_counts} #{print_word_count} #{print_byte_count} #{print_file_name} \n"
 end
 
 def option_parse
