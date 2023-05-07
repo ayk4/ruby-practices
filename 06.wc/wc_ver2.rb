@@ -32,7 +32,6 @@ def option_parse
   options
 end
 
-
 def get_files_data(files_path)
   files_path.map do |file_path|
     content = nil

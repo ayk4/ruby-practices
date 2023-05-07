@@ -2,14 +2,19 @@
 
 require 'optparse'
 require 'readline'
+require 'debug'
 
 def main
   options = option_parse
   options = { l: true, w: true, c: true } if options.empty?
+  binging.break
   
   # 引数の有無を確認する。引数がないときには？
   if ARGV.empty?
     # 引数なし
+    
+
+    p "test"
     read_pipe = $stdin.read
     print_argv_deta(read_pipe, options)
   else
@@ -31,7 +36,6 @@ def option_parse
   end
   options
 end
-
 
 def get_files_data(files_path)
   files_path.map do |file_path|
